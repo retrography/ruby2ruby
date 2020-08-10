@@ -1,3 +1,4 @@
+
 #!/usr/bin/env ruby -w
 
 require "rubygems"
@@ -81,7 +82,7 @@ class Ruby2Ruby < SexpProcessor
 
   def initialize # :nodoc:
     super
-    @indent = "  "
+    @indent = ""
     self.require_empty = false
     self.strict = true
     self.expected = String
@@ -348,7 +349,7 @@ class Ruby2Ruby < SexpProcessor
   end
 
   def process_class exp # :nodoc:
-    "#{exp.comments}class #{util_module_or_class(exp, true)}"
+    "class #{util_module_or_class(exp, true)}"
   end
 
   def process_colon2 exp # :nodoc:
@@ -395,7 +396,6 @@ class Ruby2Ruby < SexpProcessor
   def process_defn(exp) # :nodoc:
     _, name, args, *body = exp
 
-    comm = exp.comments
     args = process args
     args = "" if args == "()"
 
@@ -427,7 +427,7 @@ class Ruby2Ruby < SexpProcessor
       simple && body =~ /^\Abegin/ && body =~ /^end\z/
     body = indent(body) unless simple && body =~ /(^|\n)rescue/
 
-    "#{comm}def #{name}#{args}\n#{body}\nend".gsub(/\n\s*\n+/, "\n")
+    "def #{name}#{args}\n#{body}\nend".gsub(/\n\s*\n+/, "\n")
   end
 
   def process_defs exp # :nodoc:
@@ -763,7 +763,7 @@ class Ruby2Ruby < SexpProcessor
   end
 
   def process_module(exp) # :nodoc:
-    "#{exp.comments}module #{util_module_or_class(exp)}"
+    "module #{util_module_or_class(exp)}"
   end
 
   def process_next(exp) # :nodoc:
